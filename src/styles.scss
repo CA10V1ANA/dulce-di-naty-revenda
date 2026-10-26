@@ -1257,3 +1257,159 @@ dialog::backdrop {
     600 26px Georgia,
     serif;
 }
+
+
+/* Horizontal carousel for flavors and in-modal flavor selector */
+.section-head-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+.section-head-side p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.carousel-controls {
+  display: flex;
+  gap: 10px;
+}
+.carousel-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #decac0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brown);
+  font-size: 18px;
+  transition:
+    transform 0.2s,
+    background 0.2s,
+    border-color 0.2s;
+}
+.carousel-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--rose);
+  background: var(--blush);
+}
+.product-grid {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 22px;
+  padding: 10px 4px 26px;
+  scrollbar-width: thin;
+  scrollbar-color: #decac0 transparent;
+}
+.product-grid::-webkit-scrollbar {
+  height: 6px;
+}
+.product-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+.product-grid::-webkit-scrollbar-thumb {
+  background: #decac0;
+  border-radius: 10px;
+}
+.product-card {
+  flex: 0 0 min(350px, 84vw);
+  scroll-snap-align: start;
+}
+.product-card .tag-count {
+  left: auto;
+  right: 16px;
+  background: var(--rose);
+  color: #fff;
+}
+.modal-flavors {
+  margin: 0 42px 20px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eadad1;
+}
+.modal-flavors-label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.modal-flavors-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.flavor-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid #decac0;
+  border-radius: 40px;
+  background: #fff;
+  color: var(--brown);
+  font-size: 12px;
+  font-weight: 800;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+.flavor-chip:hover {
+  border-color: var(--rose);
+  background: var(--blush);
+}
+.flavor-chip.active {
+  border-color: var(--brown);
+  background: var(--brown);
+  color: #fff;
+}
+.flavor-chip b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: var(--rose);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+}
+.summary-row.active {
+  background: rgba(215, 101, 147, 0.08);
+  border-radius: 8px;
+  padding-inline: 8px;
+}
+.summary-row-select {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: var(--brown) !important;
+}
+.summary-row-select:hover strong {
+  color: var(--rose);
+  text-decoration: underline;
+}
+@media (max-width: 700px) {
+  .section-head-side {
+    align-items: center;
+  }
+  .product-card {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+  }
+  .modal-flavors {
+    margin-right: 36px;
+  }
+}
