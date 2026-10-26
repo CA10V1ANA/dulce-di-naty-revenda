@@ -2,31 +2,33 @@
 
 Landing page e vitrine digital para a revenda de brownies artesanais da Dulce di Naty.
 
-## Sobre o projeto
-
-A experiência apresenta a marca, os brownies e o processo de revenda de forma visual e responsiva. Visitantes podem abrir o modal de pedido, selecionar recheios e quantidades, acompanhar o mínimo de 15 unidades e enviar a solicitação formatada pelo WhatsApp.
-
 ## Stack
 
-- HTML5 semântico
-- CSS3 responsivo
-- JavaScript moderno
+- Angular 20 standalone
+- TypeScript
+- SCSS
 - Imagens WebP otimizadas
 
 ## Funcionalidades
 
-- Hero editorial com identidade da marca
-- Catálogo de brownies configurável
-- Modal de seleção e resumo do pedido
-- Validação do pedido mínimo
-- Integração com WhatsApp
-- Galeria de fotos sem legendas
+- Hero editorial com identidade rosa-claro e chocolate
+- Catálogo configurável com modal de pedido
+- Seleção de recheios e quantidades com mínimo de 15 unidades
+- Resumo da solicitação e mensagem pronta para WhatsApp
+- Galeria simples de fotos
 - Layout mobile-first e suporte a movimento reduzido
 
-## Como executar
+## Desenvolvimento
 
-Abra o arquivo `dist/index.html` no navegador ou sirva a pasta `dist` com qualquer servidor estático.
+```bash
+npm install
+npm start
+``
 
-## Observação
+Para gerar a versão de produção:
 
-Os nomes dos recheios no catálogo são provisórios e podem ser alterados no arquivo `dist/app.js` quando a linha oficial for definida.
+```bash
+npm run build
+```
+
+Os produtos são configuráveis em `src/app/app.ts`; nomes e condições comerciais permanecem abertos para a definição da Natália.
