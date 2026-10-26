@@ -67,9 +67,29 @@
       <div class="section-head reveal">
         <p class="kicker">Escolha o seu recheio</p>
         <h2>Mesma base.<br /><em>Novas tentações.</em></h2>
-        <p>Toque em uma opção para escolher a quantidade e montar seu pedido.</p>
+        <div class="section-head-side">
+          <p>Deslize para o lado e toque em uma opção para montar seu pedido.</p>
+          <div class="carousel-controls" aria-label="Navegar pelos sabores">
+            <button
+              type="button"
+              class="carousel-btn"
+              (click)="scrollProducts(-1)"
+              aria-label="Ver sabores anteriores"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              class="carousel-btn"
+              (click)="scrollProducts(1)"
+              aria-label="Ver próximos sabores"
+            >
+              →
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="product-grid">
+      <div class="product-grid" #productTrack>
         @for (product of products; track product.id) {
           <button
             class="product-card reveal"
@@ -78,6 +98,9 @@
             [attr.aria-label]="'Escolher ' + product.name"
           >
             <span class="tag">Brownie de 100g</span>
+            @if ((cart[product.id] || 0) > 0) {
+              <span class="tag tag-count">{{ cart[product.id] }} no pedido</span>
+            }
             <img
               [src]="product.image"
               [alt]="'Apresentação do ' + product.name"
@@ -86,7 +109,7 @@
             />
             <span class="product-copy"
               ><span
-                ><small>Opção de recheio</small><strong>{{ product.name }}</strong></span
+                ><small>{{ product.note }}</small><strong>{{ product.name }}</strong></span
               ><span aria-hidden="true">＋</span></span
             >
           </button>
@@ -238,6 +261,25 @@
     <button class="modal-close" type="button" (click)="closeOrder()" aria-label="Fechar pedido">
       ×
     </button>
+    <div class="modal-flavors" aria-label="Sabores disponíveis">
+      <span class="modal-flavors-label">Escolha o sabor:</span>
+      <div class="modal-flavors-list">
+        @for (product of products; track product.id) {
+          <button
+            type="button"
+            class="flavor-chip"
+            [class.active]="selectedProduct.id === product.id"
+            [class.has-items]="(cart[product.id] || 0) > 0"
+            (click)="selectProduct(product)"
+          >
+            <span>{{ product.name }}</span>
+            @if ((cart[product.id] || 0) > 0) {
+              <b>{{ cart[product.id] }}</b>
+            }
+          </button>
+        }
+      </div>
+    </div>
     <div class="modal-product">
       <img
         [src]="selectedProduct.image"
@@ -265,7 +307,7 @@
         </button>
       </div>
       <button class="pill pill-pink" type="button" (click)="addSelectedProduct()">
-        Adicionar ao pedido
+        {{ (cart[selectedProduct.id] || 0) > 0 ? 'Atualizar no pedido' : 'Adicionar ao pedido' }}
       </button>
     </div>
     <div class="order-summary">
@@ -282,9 +324,15 @@
         } @else {
           @for (product of products; track product.id) {
             @if ((cart[product.id] || 0) > 0) {
-              <div class="summary-row">
-                <strong>{{ product.name }}</strong
-                ><span>{{ cart[product.id] }} un.</span
+              <div class="summary-row" [class.active]="selectedProduct.id === product.id">
+                <button
+                  type="button"
+                  class="summary-row-select"
+                  (click)="selectProduct(product)"
+                >
+                  <strong>{{ product.name }}</strong>
+                </button>
+                <span>{{ cart[product.id] }} un.</span
                 ><button type="button" (click)="removeProduct(product.id)">remover</button>
               </div>
             }

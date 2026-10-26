@@ -18,14 +18,17 @@ interface BrownieProduct {
 export class App implements AfterViewInit {
   @ViewChild('orderDialog') private orderDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild('infoDialog') private infoDialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild('productTrack') private productTrack?: ElementRef<HTMLElement>;
 
   readonly whatsappNumber = '5585998116002';
   readonly minimumOrder = 15;
   readonly currentYear = new Date().getFullYear();
   readonly products: BrownieProduct[] = [
-    { id: 'recheio-01', name: 'Recheio 01', note: 'Nome do recheio a confirmar', image: 'assets/brownie-1.webp' },
-    { id: 'recheio-02', name: 'Recheio 02', note: 'Nome do recheio a confirmar', image: 'assets/brownie-2.webp' },
-    { id: 'recheio-03', name: 'Recheio 03', note: 'Nome do recheio a confirmar', image: 'assets/brownie-1.webp' },
+    { id: 'ninho', name: 'Ninho', note: 'Recheio cremoso de leite Ninho', image: 'assets/brownie-1.webp' },
+    { id: 'brigadeiro', name: 'Brigadeiro', note: 'Brigadeiro tradicional cremoso', image: 'assets/brownie-2.webp' },
+    { id: 'dois-amores', name: '2 Amores', note: 'Chocolate e Ninho', image: 'assets/brownie-1.webp' },
+    { id: 'ovomaltine', name: 'Ovo Maltine', note: 'Cremoso com crocância de Ovomaltine', image: 'assets/brownie-2.webp' },
+    { id: 'crocante', name: 'Crocante', note: 'Crocante de amendoim', image: 'assets/brownie-1.webp' },
   ];
 
   cart: Record<string, number> = {};
@@ -55,9 +58,21 @@ export class App implements AfterViewInit {
   get missingUnits(): number { return Math.max(0, this.minimumOrder - this.totalUnits); }
   get progress(): number { return Math.min(100, (this.totalUnits / this.minimumOrder) * 100); }
 
-  openOrder(product = this.selectedProduct): void {
+  scrollProducts(direction: number): void {
+    const track = this.productTrack?.nativeElement;
+    if (!track) return;
+    const card = track.querySelector<HTMLElement>('.product-card');
+    const step = (card?.offsetWidth || 340) + 22;
+    track.scrollBy({ left: direction * step, behavior: 'smooth' });
+  }
+
+  selectProduct(product: BrownieProduct): void {
     this.selectedProduct = product;
     this.modalQuantity = this.cart[product.id] || 1;
+  }
+
+  openOrder(product = this.selectedProduct): void {
+    this.selectProduct(product);
     this.orderDialog.nativeElement.showModal();
   }
 
