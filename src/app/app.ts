@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 interface BrownieProduct {
   id: string;
@@ -15,7 +15,7 @@ interface BrownieProduct {
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements AfterViewInit {
   @ViewChild('orderDialog') private orderDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild('infoDialog') private infoDialog!: ElementRef<HTMLDialogElement>;
 
@@ -31,6 +31,25 @@ export class App {
   cart: Record<string, number> = {};
   selectedProduct = this.products[0];
   modalQuantity = 1;
+
+  ngAfterViewInit(): void {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    elements.forEach((element) => observer.observe(element));
+  }
 
   get totalUnits(): number { return Object.values(this.cart).reduce((total, quantity) => total + quantity, 0); }
   get missingUnits(): number { return Math.max(0, this.minimumOrder - this.totalUnits); }
