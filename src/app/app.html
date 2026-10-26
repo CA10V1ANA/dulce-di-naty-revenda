@@ -1,0 +1,81 @@
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<div class="chocolate-top" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="header" id="inicio">
+  <nav class="nav wrap" aria-label="Navegação principal">
+    <a class="brand" href="#inicio" aria-label="Dulce di Naty — início">
+      <img src="assets/logo.webp" width="48" height="48" alt="" />
+      <span>Dulce di Naty<small>brownies para revenda</small></span>
+    </a>
+    <div class="nav-links"><a href="#brownies">Brownies</a><a href="#parceria">A parceria</a><a href="#galeria">Galeria</a></div>
+    <button class="pill pill-dark" type="button" (click)="openOrder()">Montar pedido</button>
+  </nav>
+</header>
+
+<main id="conteudo">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy reveal">
+        <p class="kicker">Brownies artesanais • feitos pela Natália</p>
+        <h1>Uma doce forma de <em>começar.</em></h1>
+        <p class="lead">Brownies recheados de 100g, produzidos com carinho para você revender do seu jeito.</p>
+        <div class="hero-actions">
+          <a class="text-button" href="#brownies">Conhecer os brownies <span>↓</span></a>
+          <button class="status" type="button" (click)="openInfo()"><i></i> Produção das 13h30 às 17h30</button>
+        </div>
+        <div class="hero-detail"><span>♡</span><p><strong>Comece com 15 unidades.</strong><br />Cotação e suporte direto com a Natália.</p></div>
+      </div>
+      <div class="hero-photo reveal">
+        <div class="photo-paper"><img src="assets/brownie-2.webp" alt="Brownies artesanais com chocolate" width="750" height="850" /></div>
+        <div class="seal">feito<br /><strong>com afeto</strong><br />♡</div>
+        <span class="scribble one">✦</span><span class="scribble two">♡</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div>100G POR UNIDADE <b>✦</b> PEDIDO MÍNIMO 15 <b>♡</b> 10 DIAS DE VALIDADE <b>✦</b> SUPORTE PARA VENDER <b>♡</b> 100G POR UNIDADE <b>✦</b> PEDIDO MÍNIMO 15 <b>♡</b> 10 DIAS DE VALIDADE <b>✦</b> SUPORTE PARA VENDER <b>♡</b></div></div>
+
+  <section class="products section" id="brownies">
+    <div class="wrap">
+      <div class="section-head reveal"><p class="kicker">Escolha o seu recheio</p><h2>Mesma base.<br /><em>Novas tentações.</em></h2><p>Toque em uma opção para escolher a quantidade e montar seu pedido.</p></div>
+      <div class="product-grid">
+        @for (product of products; track product.id) {
+          <button class="product-card reveal" type="button" (click)="openOrder(product)" [attr.aria-label]="'Escolher ' + product.name">
+            <span class="tag">Brownie de 100g</span>
+            <img [src]="product.image" [alt]="'Apresentação do ' + product.name" width="560" height="560" />
+            <span class="product-copy"><span><small>Opção de recheio</small><strong>{{ product.name }}</strong></span><span aria-hidden="true">＋</span></span>
+          </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="partnership section" id="parceria">
+    <div class="wrap partnership-card reveal">
+      <div class="partnership-copy"><p class="kicker">Uma parceria que acolhe</p><h2>Você vende.<br /><em>A Natália cuida junto.</em></h2><p>Além dos brownies, você recebe orientação e ideias para divulgar. E se algum item vencer sem ser vendido, a Natália faz a troca do mesmo item.</p><button class="text-button light" type="button" (click)="contactWhatsApp()">Quero conversar sobre revenda <span>↗</span></button></div>
+      <div class="quick-facts" aria-label="Informações da parceria"><article><span>15</span><p>unidades<br />no pedido mínimo</p></article><article><span>10</span><p>dias de<br />validade</p></article><article><span>♡</span><p>suporte e<br />estratégias</p></article></div>
+    </div>
+  </section>
+
+  <section class="gallery section" id="galeria" aria-label="Galeria de brownies">
+    <div class="wrap gallery-grid reveal"><img class="gallery-tall" src="assets/brownie-1.webp" alt="Brownies artesanais empilhados" width="700" height="850" /><img src="assets/brownie-2.webp" alt="Brownies com cobertura de chocolate" width="700" height="520" /><img src="assets/brownie-1.webp" alt="Detalhe da casquinha do brownie" width="700" height="520" /></div>
+  </section>
+
+  <section class="how section"><div class="wrap how-grid"><div class="how-title reveal"><p class="kicker">Do pedido até você</p><h2>Simples,<br /><em>como deve ser.</em></h2></div><ol class="steps reveal"><li><b>01</b><div><strong>Escolha</strong><p>Monte seu pedido com no mínimo 15 brownies.</p></div></li><li><b>02</b><div><strong>Combine</strong><p>A Natália envia a cotação e confirma os detalhes.</p></div></li><li><b>03</b><div><strong>Receba</strong><p>Entrega em bairros próximos ou retirada combinada.</p></div></li></ol></div><div class="wrap same-day reveal"><span>✦</span><p><strong>Pediu pela manhã?</strong> Havendo disponibilidade, você pode receber no mesmo dia.</p><span>♡</span></div></section>
+
+  <section class="cta section"><div class="wrap cta-inner reveal"><img src="assets/mascote.webp" alt="Mascote brownie da Dulce di Naty" width="280" height="260" /><div><p class="kicker">Sua revenda pode começar hoje</p><h2>Vamos adoçar essa ideia?</h2><p>Escolha seus brownies e envie sua solicitação pelo WhatsApp.</p></div><button class="pill pill-light" type="button" (click)="openOrder()">Montar meu pedido ♡</button></div></section>
+</main>
+
+<footer class="footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="#inicio"><img src="assets/logo.webp" width="52" height="52" alt="" /><span>Dulce di Naty<small>doces com afeto</small></span></a><p>Brownies artesanais para revenda.</p><div><a href="https://www.instagram.com/dulce_dinaty/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><button type="button" (click)="contactWhatsApp()">WhatsApp ↗</button></div><small>© {{ currentYear }} Dulce di Naty</small></div></footer>
+<button class="floating-order" type="button" (click)="openOrder()"><span>{{ totalUnits }}</span><b>Montar pedido</b></button>
+
+<dialog #orderDialog class="order-modal" aria-labelledby="modal-title" (click)="closeOnBackdrop($event, orderDialog)">
+  <div class="modal-shell">
+    <button class="modal-close" type="button" (click)="closeOrder()" aria-label="Fechar pedido">×</button>
+    <div class="modal-product"><img [src]="selectedProduct.image" [alt]="'Brownie ' + selectedProduct.name" width="420" height="420" /><div><span>Brownie artesanal • 100g</span><h2 id="modal-title">{{ selectedProduct.name }}</h2><p>{{ selectedProduct.note }}. A base artesanal e o peso de 100g são os mesmos em todas as opções.</p></div></div>
+    <div class="modal-controls"><p>Quantidade deste recheio</p><div class="quantity"><button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">−</button><strong>{{ modalQuantity }}</strong><button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">+</button></div><button class="pill pill-pink" type="button" (click)="addSelectedProduct()">Adicionar ao pedido</button></div>
+    <div class="order-summary"><div class="summary-head"><div><span>Seu pedido</span><strong>{{ totalUnits }} {{ totalUnits === 1 ? 'unidade' : 'unidades' }}</strong></div><div class="progress"><i [style.width.%]="progress"></i></div></div><div class="summary-items">@if (totalUnits === 0) {<p class="empty">Escolha seus brownies. O mínimo é 15 unidades.</p>} @else { @for (product of products; track product.id) { @if ((cart[product.id] || 0) > 0) {<div class="summary-row"><strong>{{ product.name }}</strong><span>{{ cart[product.id] }} un.</span><button type="button" (click)="removeProduct(product.id)">remover</button></div>} } }</div><button class="pill pill-dark full" type="button" (click)="sendWhatsApp()" [disabled]="totalUnits < minimumOrder">{{ missingUnits > 0 ? 'Faltam ' + missingUnits + (missingUnits === 1 ? ' unidade' : ' unidades') : 'Enviar pedido pelo WhatsApp ↗' }}</button></div>
+  </div>
+</dialog>
+
+<dialog #infoDialog class="info-modal" aria-labelledby="info-title" (click)="closeOnBackdrop($event, infoDialog)"><div class="info-shell"><button class="modal-close" type="button" (click)="closeInfo()" aria-label="Fechar informações">×</button><p class="kicker">Informações rápidas</p><h2 id="info-title">Produção à tarde, carinho o dia inteiro.</h2><ul><li>Produção das 13h30 às 17h30.</li><li>Pedidos pela manhã podem ser recebidos no mesmo dia, conforme disponibilidade.</li><li>Entrega em bairros próximos ou retirada combinada.</li></ul><button class="pill pill-dark full" type="button" (click)="contactWhatsApp()">Confirmar pelo WhatsApp</button></div></dialog>
