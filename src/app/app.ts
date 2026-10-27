@@ -24,11 +24,11 @@ export class App implements AfterViewInit {
   readonly minimumOrder = 15;
   readonly currentYear = new Date().getFullYear();
   readonly products: BrownieProduct[] = [
-    { id: 'ninho', name: 'Ninho', note: 'Recheio cremoso de leite Ninho', image: 'assets/brownie-1.webp' },
-    { id: 'brigadeiro', name: 'Brigadeiro', note: 'Brigadeiro tradicional cremoso', image: 'assets/brownie-2.webp' },
-    { id: 'dois-amores', name: '2 Amores', note: 'Chocolate e Ninho', image: 'assets/brownie-1.webp' },
+    { id: 'ninho', name: 'Ninho', note: 'Recheio cremoso de leite Ninho', image: 'assets/ninho.webp' },
+    { id: 'brigadeiro', name: 'Brigadeiro', note: 'Brigadeiro tradicional cremoso', image: 'assets/brigadeiro.webp' },
+    { id: 'dois-amores', name: '2 Amores', note: 'Chocolate e Ninho', image: 'assets/dois-amores.webp' },
+    { id: 'crocante', name: 'Crocante', note: 'Crocante de amendoim', image: 'assets/crocante.webp' },
     { id: 'ovomaltine', name: 'Ovo Maltine', note: 'Cremoso com crocância de Ovomaltine', image: 'assets/brownie-2.webp' },
-    { id: 'crocante', name: 'Crocante', note: 'Crocante de amendoim', image: 'assets/brownie-1.webp' },
   ];
 
   cart: Record<string, number> = {};
@@ -62,7 +62,7 @@ export class App implements AfterViewInit {
     const track = this.productTrack?.nativeElement;
     if (!track) return;
     const card = track.querySelector<HTMLElement>('.product-card');
-    const step = (card?.offsetWidth || 340) + 22;
+    const step = (card?.offsetWidth || 340) + 14;
     track.scrollBy({ left: direction * step, behavior: 'smooth' });
   }
 
@@ -106,3 +106,4 @@ export class App implements AfterViewInit {
     window.open(`https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   }
 }
+

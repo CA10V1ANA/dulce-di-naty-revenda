@@ -1,7 +1,4 @@
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
-<div class="chocolate-top" aria-hidden="true">
-  <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-</div>
 
 <header class="header" id="inicio">
   <nav class="nav wrap" aria-label="Navegação principal">
@@ -22,72 +19,34 @@
     <div class="wrap hero-grid">
       <div class="hero-copy reveal">
         <p class="kicker">Brownies artesanais • feitos pela Natália</p>
-        <h1>Uma doce forma de <em>começar.</em></h1>
+        <h1>Uma doce<br />forma de<br /><em>começar.</em></h1>
         <p class="lead">
-          Brownies recheados de 100g, produzidos com carinho para você revender do seu jeito.
+          Brownies recheados de 100 g para<br class="desktop-break" /> você revender do seu jeito.
         </p>
         <div class="hero-actions">
-          <a class="text-button" href="#brownies">Conhecer os brownies <span>↓</span></a>
-          <button class="status" type="button" (click)="openInfo()">
-            <i></i> Produção das 13h30 às 17h30
+          <a class="pill pill-dark hero-cta" href="#brownies">Ver sabores <span aria-hidden="true">→</span></a>
+          <button class="minimum-order" type="button" (click)="openInfo()">
+            <img src="assets/package.svg" width="48" height="48" alt="" />
+            <span>Pedido mínimo:<strong>15 unidades.</strong></span>
           </button>
-        </div>
-        <div class="hero-detail">
-          <span>♡</span>
-          <p>
-            <strong>Comece com 15 unidades.</strong><br />Cotação e suporte direto com a Natália.
-          </p>
         </div>
       </div>
       <div class="hero-photo reveal">
-        <div class="photo-paper">
-          <img
-            src="assets/brownie-2.webp"
-            alt="Brownies artesanais com chocolate"
-            width="750"
-            height="850"
-          />
-        </div>
-        <div class="seal">feito<br /><strong>com afeto</strong><br />♡</div>
-        <span class="scribble one">✦</span><span class="scribble two">♡</span>
+        <img class="hero-background" src="assets/hero-brownies.webp" alt="Brownies de casquinha crocante com recheio cremoso de leite, servidos em um prato sobre tecido rosa" fetchpriority="high" />
+        <div class="seal"><span>FEITO PELA</span><img src="assets/heart.svg" width="34" height="34" alt="" /><span>NATÁLIA</span></div>
       </div>
     </div>
   </section>
 
-  <div class="ticker" aria-hidden="true">
-    <div>
-      100G POR UNIDADE <b>✦</b> PEDIDO MÍNIMO 15 <b>♡</b> 10 DIAS DE VALIDADE <b>✦</b> SUPORTE PARA
-      VENDER <b>♡</b> 100G POR UNIDADE <b>✦</b> PEDIDO MÍNIMO 15 <b>♡</b> 10 DIAS DE VALIDADE
-      <b>✦</b> SUPORTE PARA VENDER <b>♡</b>
-    </div>
-  </div>
 
   <section class="products section" id="brownies">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="kicker">Escolha o seu recheio</p>
-        <h2>Mesma base.<br /><em>Novas tentações.</em></h2>
-        <div class="section-head-side">
-          <p>Deslize para o lado e toque em uma opção para montar seu pedido.</p>
-          <div class="carousel-controls" aria-label="Navegar pelos sabores">
-            <button
-              type="button"
-              class="carousel-btn"
-              (click)="scrollProducts(-1)"
-              aria-label="Ver sabores anteriores"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              class="carousel-btn"
-              (click)="scrollProducts(1)"
-              aria-label="Ver próximos sabores"
-            >
-              →
-            </button>
-          </div>
+        <div>
+          <h2>Escolha o seu <em>recheio.</em></h2>
+          <p>Os sabores que mais fazem sucesso entre os revendedores.</p>
         </div>
+        <button class="text-button all-flavors" type="button" (click)="scrollProducts(1)">Ver todos os sabores <span aria-hidden="true">→</span></button>
       </div>
       <div class="product-grid" #productTrack>
         @for (product of products; track product.id) {
@@ -97,7 +56,6 @@
             (click)="openOrder(product)"
             [attr.aria-label]="'Escolher ' + product.name"
           >
-            <span class="tag">Brownie de 100g</span>
             @if ((cart[product.id] || 0) > 0) {
               <span class="tag tag-count">{{ cart[product.id] }} no pedido</span>
             }
@@ -109,7 +67,7 @@
             />
             <span class="product-copy"
               ><span
-                ><small>{{ product.note }}</small><strong>{{ product.name }}</strong></span
+                ><strong>{{ product.name }}</strong><small>Brownie de 100 g</small></span
               ><span aria-hidden="true">＋</span></span
             >
           </button>
@@ -213,7 +171,7 @@
     <div class="wrap cta-inner reveal">
       <img
         class="mascot-sticker"
-        src="assets/mascote-sticker.png"
+        src="assets/mascote.webp"
         alt="Mascote brownie da Dulce di Naty"
         width="280"
         height="300"
@@ -246,10 +204,12 @@
     <small>© {{ currentYear }} Dulce di Naty</small>
   </div>
 </footer>
+@if (totalUnits > 0) {
 <button class="floating-order" type="button" (click)="openOrder()">
   <span>{{ totalUnits }}</span
   ><b>Montar pedido</b>
 </button>
+}
 
 <dialog
   #orderDialog
@@ -368,6 +328,7 @@
     <p class="kicker">Informações rápidas</p>
     <h2 id="info-title">Produção à tarde, carinho o dia inteiro.</h2>
     <ul>
+      <li>Pedido mínimo de 15 unidades. Você pode combinar os sabores.</li>
       <li>Produção das 13h30 às 17h30.</li>
       <li>Pedidos pela manhã podem ser recebidos no mesmo dia, conforme disponibilidade.</li>
       <li>Entrega em bairros próximos ou retirada combinada.</li>
@@ -377,3 +338,4 @@
     </button>
   </div>
 </dialog>
+
