@@ -39,39 +39,50 @@
   </section>
 
 
-  <section class="products section" id="brownies">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <h2>Escolha o seu <em>recheio.</em></h2>
-          <p>Os sabores que mais fazem sucesso entre os revendedores.</p>
+  <section class="brownie-showcase" id="brownies" #flavorShowcase
+    aria-labelledby="showcase-title"
+    (mouseenter)="setShowcaseHovered(true)" (mouseleave)="setShowcaseHovered(false)"
+    (focusin)="setShowcaseFocused($event)" (focusout)="setShowcaseFocused($event)">
+    <div class="wrap showcase-layout">
+      <div class="showcase-preview">
+        <div class="showcase-photo" aria-hidden="true">
+      @for (product of products; track product.id; let index = $index) {
+        <img [src]="showcaseImage(product)" alt="" width="1536" height="1024"
+          [class.is-active]="activeFlavorIndex === index" />
+      }
         </div>
-        <button class="text-button all-flavors" type="button" (click)="scrollProducts(1)">Ver todos os sabores <span aria-hidden="true">→</span></button>
+        <div class="showcase-caption">
+        <span>Casquinha delicada. Recheio generoso.</span>
+        <strong>{{ featuredProduct.name }}</strong>
+        </div>
       </div>
-      <div class="product-grid" #productTrack>
-        @for (product of products; track product.id) {
-          <button
-            class="product-card reveal"
-            type="button"
-            (click)="openOrder(product)"
-            [attr.aria-label]="'Escolher ' + product.name"
-          >
-            @if ((cart[product.id] || 0) > 0) {
-              <span class="tag tag-count">{{ cart[product.id] }} no pedido</span>
-            }
-            <img
-              [src]="product.image"
-              [alt]="'Apresentação do ' + product.name"
-              width="560"
-              height="560"
-            />
-            <span class="product-copy"
-              ><span
-                ><strong>{{ product.name }}</strong><small>Brownie de 100 g</small></span
-              ><span aria-hidden="true">＋</span></span
-            >
+      <div class="showcase-content">
+        <p class="showcase-eyebrow">Feito pela Natália, escolhido por você</p>
+        <h2 id="showcase-title">O brownie da <span>Natália</span></h2>
+        <p class="showcase-subtitle">Brownies recheados de 100 g.</p>
+        <div class="flavor-options" aria-label="Escolha o recheio">
+          @for (product of products; track product.id; let index = $index) {
+            <label class="flavor-option" [class.is-selected]="activeFlavorIndex === index">
+              <input type="radio" name="featured-flavor" [value]="product.id" [attr.aria-label]="product.name"
+                [checked]="activeFlavorIndex === index" (change)="chooseFlavor(index)" />
+              <span class="flavor-name">{{ product.name }}</span>
+              @if (activeFlavorIndex === index) {
+                <span class="flavor-description">{{ product.note }}.</span>
+              }
+            </label>
+          }
+        </div>
+        <button class="showcase-order" type="button" (click)="openOrder(featuredProduct)"
+          [attr.aria-label]="'Adicionar ' + featuredProduct.name + ' ao pedido'">
+          Adicionar ao pedido <img src="assets/shopping-cart.svg" width="30" height="30" alt="" />
+        </button>
+        <div class="showcase-footer">
+          <span>Escolha seus sabores. Comece com 15 unidades.</span>
+          <button type="button" class="autoplay-toggle" (click)="toggleAutoplay()"
+            [attr.aria-pressed]="autoplay">
+            {{ autoplay ? 'Pausar apresentação' : 'Retomar apresentação' }}
           </button>
-        }
+        </div>
       </div>
     </div>
   </section>
@@ -338,4 +349,3 @@
     </button>
   </div>
 </dialog>
-
