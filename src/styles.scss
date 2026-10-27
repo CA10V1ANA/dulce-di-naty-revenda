@@ -1522,6 +1522,21 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--rose); outline-
 .hero { height: min(39vw, 720px); min-height: 645px; }
 .hero h1 { font-size: clamp(82px, 6.45vw, 122px); }
 .hero h1 em { line-height: .84; }
+
+/* Foto real da produção na abertura, com espaço para a chamada. */
+.hero-photo { background: #fffaf0; }
+.hero-background { position: absolute; right: 0; width: 60%; object-position: center 56%; }
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #fffaf0 32%, rgba(255, 250, 240, .92) 43%, transparent 64%);
+}
+.hero-photo .seal { z-index: 1; }
+@media (max-width: 700px) {
+  .hero-background { width: 100%; margin-left: 0; object-position: center 54%; }
+  .hero-photo::after { display: none; }
+}
 .product-copy > span:first-child { place-items: normal; }
 @media (max-width: 1150px) and (min-width: 701px) {
   .hero { min-height: 615px; }
