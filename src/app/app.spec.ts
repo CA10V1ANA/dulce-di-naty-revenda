@@ -1,59 +1,62 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 
-describe('Brownie flavor showcase', () => {
+describe('Dulce di Naty order flow', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
-    spyOn(window, 'matchMedia').and.returnValue({ matches: false } as MediaQueryList);
-    spyOn(window, 'IntersectionObserver').and.callFake(function (callback: IntersectionObserverCallback) { return {
-      observe: (target: Element) => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver),
-      unobserve: () => {}, disconnect: () => {}, takeRecords: () => [],
-      root: null, rootMargin: '', thresholds: [],
-    }; });
   });
 
-  it('opens the order with the flavor selected in the showcase', () => {
+  it('opens the order with the selected showcase flavor', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const app = fixture.componentInstance;
-    const index = app.products.findIndex(product => product.id === 'ninho');
+    const index = app.products.findIndex(product => product.id === 'brigadeiro');
+
     app.chooseFlavor(index);
     app.openOrder(app.featuredProduct);
-    expect(app.selectedProduct.id).toBe('ninho');
+
+    expect(app.selectedProduct.id).toBe('brigadeiro');
     expect(fixture.nativeElement.querySelector('dialog').open).toBeTrue();
-    fixture.destroy();
   });
 
-  it('rotates every six seconds and pauses while the order is open', fakeAsync(() => {
+  it('adds quantities and calculates the minimum-order progress', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const app = fixture.componentInstance;
-    const initialIndex = app.activeFlavorIndex;
-    tick(6000);
-    expect(app.activeFlavorIndex).toBe((initialIndex + 1) % app.products.length);
-    app.openOrder(app.featuredProduct);
-    const orderFlavor = app.featuredProduct.id;
-    tick(12000);
-    expect(app.featuredProduct.id).toBe(orderFlavor);
-    expect(app.selectedProduct.id).toBe(orderFlavor);
-    fixture.destroy();
-  }));
 
-  it('pauses for interaction and resumes only when enabled', fakeAsync(() => {
+    app.modalQuantity = 10;
+    app.addSelectedProduct();
+    expect(app.totalUnits).toBe(10);
+    expect(app.missingUnits).toBe(5);
+
+    app.selectProduct(app.products[1]);
+    app.modalQuantity = 5;
+    app.addSelectedProduct();
+    expect(app.totalUnits).toBe(15);
+    expect(app.missingUnits).toBe(0);
+    expect(app.progress).toBe(100);
+  });
+
+  it('removes a flavor without changing the remaining quantities', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const app = fixture.componentInstance;
-    app.chooseFlavor(0);
-    app.setShowcaseHovered(true);
-    tick(6000);
-    expect(app.activeFlavorIndex).toBe(0);
-    app.setShowcaseHovered(false);
-    app.toggleAutoplay();
-    tick(12000);
-    expect(app.activeFlavorIndex).toBe(0);
-    app.toggleAutoplay();
-    tick(6000);
-    expect(app.activeFlavorIndex).toBe(1);
-    fixture.destroy();
-  }));
+
+    app.cart = { ninho: 8, brigadeiro: 7 };
+    app.removeProduct('ninho');
+
+    expect(app.cart['ninho']).toBeUndefined();
+    expect(app.totalUnits).toBe(7);
+  });
+
+  it('toggles the mobile navigation state', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const app = fixture.componentInstance;
+
+    app.toggleMenu();
+    expect(app.menuOpen).toBeTrue();
+    app.closeMenu();
+    expect(app.menuOpen).toBeFalse();
+  });
 });

@@ -1,342 +1,329 @@
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
 
-<header class="header" id="inicio">
-  <nav class="nav wrap" aria-label="Navegação principal">
+<header class="site-header" id="inicio">
+  <nav class="nav shell" aria-label="Navegação principal">
     <a class="brand" href="#inicio" aria-label="Dulce di Naty — início">
-      <img src="assets/logo.webp" width="48" height="48" alt="" />
-      <span>Dulce di Naty<small>brownies para revenda</small></span>
+      <img src="assets/logo.webp" width="96" height="96" alt="Dulce di Naty" />
     </a>
-    <div class="nav-links">
-      <a href="#brownies">Brownies</a><a href="#parceria">A parceria</a
-      ><a href="#galeria">Galeria</a>
+
+    <button
+      class="menu-button"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="main-menu"
+    >
+      Menu
+    </button>
+
+    <div class="nav-links" id="main-menu" [class.open]="menuOpen">
+      <a href="#brownies" (click)="closeMenu()">Brownies</a>
+      <a href="#como-funciona" (click)="closeMenu()">Como funciona</a>
+      <a href="#pedido" (click)="closeMenu()">Montar pedido</a>
     </div>
-    <button class="pill pill-dark" type="button" (click)="openOrder()">Montar pedido</button>
+
+    <div class="nav-actions">
+      <button class="contact-link" type="button" (click)="contactWhatsApp()">Fale conosco</button>
+      <button
+        class="cart-button"
+        type="button"
+        (click)="openOrder()"
+        [attr.aria-label]="'Abrir pedido, ' + totalUnits + ' unidades'"
+      >
+        <img src="assets/shopping-cart.svg" width="23" height="23" alt="" />
+        @if (totalUnits > 0) {
+          <span>{{ totalUnits }}</span>
+        }
+      </button>
+    </div>
   </nav>
 </header>
 
 <main id="conteudo">
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy reveal">
-        <p class="kicker">Brownies artesanais • feitos pela Natália</p>
-        <h1>Uma doce<br />forma de<br /><em>começar.</em></h1>
-        <p class="lead">
-          Brownies recheados de 100 g para<br class="desktop-break" /> você revender do seu jeito.
-        </p>
-        <div class="hero-actions">
-          <a class="pill pill-dark hero-cta" href="#brownies">Ver sabores <span aria-hidden="true">→</span></a>
-          <button class="minimum-order" type="button" (click)="openInfo()">
-            <img src="assets/package.svg" width="48" height="48" alt="" />
-            <span>Pedido mínimo:<strong>15 unidades.</strong></span>
-          </button>
-        </div>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="shell hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Doces com afeto desde 2019</p>
+        <h1 id="hero-title">
+          <span class="hero-title-mobile">Brownies da Natália para revenda.</span>
+          <span class="hero-title-desktop">Brownies da Natália, prontos para sua revenda.</span>
+        </h1>
+        <p class="hero-lead">Artesanais, recheados e embalados individualmente. Pedido a partir de 15 unidades.</p>
+        <a class="button button-chocolate" href="#brownies">
+          Escolher sabores <span aria-hidden="true">→</span>
+        </a>
+
+        <ul class="hero-facts" aria-label="Destaques">
+          <li><img src="assets/heart.svg" width="26" height="26" alt="" /><span>Receitas<br />artesanais</span></li>
+          <li><img src="assets/package.svg" width="27" height="27" alt="" /><span>Embalados<br />individualmente</span></li>
+          <li><img src="assets/package.svg" width="27" height="27" alt="" /><span>A partir de<br />15 unidades</span></li>
+        </ul>
       </div>
-      <div class="hero-photo reveal">
-        <img class="hero-background" src="assets/hero-brownies-cliente.webp" alt="Brownies artesanais de chocolate empilhados, com casquinha crocante" width="1080" height="1247" fetchpriority="high" />
-        <div class="seal"><span>FEITO PELA</span><img src="assets/heart.svg" width="34" height="34" alt="" /><span>NATÁLIA</span></div>
-      </div>
+
+      <figure class="hero-visual">
+        <img
+          src="assets/hero-brownies.webp"
+          alt="Brownies artesanais recheados da Dulce di Naty sobre um prato"
+          fetchpriority="high"
+          width="1920"
+          height="864"
+        />
+      </figure>
     </div>
   </section>
 
+  <section class="flavor-story" id="brownies" aria-labelledby="flavor-title">
+    <div class="shell flavor-layout">
+      <div class="flavor-heading">
+        <p class="eyebrow">Nossos sabores</p>
+        <h2 id="flavor-title">Casquinha delicada.<br />Recheio generoso.</h2>
+        <p>Brownies artesanais de 100 g, com o equilíbrio entre casquinha e maciez.</p>
+      </div>
 
-  <section class="brownie-showcase" id="brownies" #flavorShowcase
-    aria-labelledby="showcase-title"
-    (mouseenter)="setShowcaseHovered(true)" (mouseleave)="setShowcaseHovered(false)"
-    (focusin)="setShowcaseFocused($event)" (focusout)="setShowcaseFocused($event)">
-    <div class="wrap showcase-layout">
-      <div class="showcase-preview">
-        <div class="showcase-photo" aria-hidden="true">
-      @for (product of products; track product.id; let index = $index) {
-        <img [src]="showcaseImage(product)" alt="" width="1536" height="1024"
-          [class.is-active]="activeFlavorIndex === index" />
-      }
-        </div>
-        <div class="showcase-caption">
-        <span>Casquinha delicada. Recheio generoso.</span>
-        <strong>{{ featuredProduct.name }}</strong>
+      <div class="flavor-visual" aria-live="polite">
+        @for (product of products; track product.id; let index = $index) {
+          <img
+            [src]="showcaseImage(product)"
+            [alt]="activeFlavorIndex === index ? 'Brownie ' + product.name + ' aberto, mostrando o recheio' : ''"
+            [class.active]="activeFlavorIndex === index"
+            [attr.aria-hidden]="activeFlavorIndex !== index"
+            width="1536"
+            height="1024"
+          />
+        }
+        <div class="flavor-label">
+          <span>Brownie de</span>
+          <strong>{{ featuredProduct.name }}</strong>
         </div>
       </div>
-      <div class="showcase-content">
-        <p class="showcase-eyebrow">Feito pela Natália, escolhido por você</p>
-        <h2 id="showcase-title">O brownie da <span>Natália</span></h2>
-        <p class="showcase-subtitle">Brownies recheados de 100 g.</p>
-        <div class="flavor-options" aria-label="Escolha o recheio">
+
+      <div class="flavor-shop">
+        <div class="flavor-options" role="radiogroup" aria-label="Escolha o sabor">
           @for (product of products; track product.id; let index = $index) {
-            <label class="flavor-option" [class.is-selected]="activeFlavorIndex === index">
-              <input type="radio" name="featured-flavor" [value]="product.id" [attr.aria-label]="product.name"
-                [checked]="activeFlavorIndex === index" (change)="chooseFlavor(index)" />
-              <span class="flavor-name">{{ product.name }}</span>
-              @if (activeFlavorIndex === index) {
-                <span class="flavor-description">{{ product.note }}.</span>
-              }
-            </label>
+            <button
+              type="button"
+              role="radio"
+              [attr.aria-checked]="activeFlavorIndex === index"
+              [class.selected]="activeFlavorIndex === index"
+              (click)="chooseFlavor(index)"
+            >
+              <img [src]="product.image" width="64" height="64" alt="" />
+              <span>{{ product.name }}</span>
+            </button>
           }
         </div>
-        <button class="showcase-order" type="button" (click)="openOrder(featuredProduct)"
-          [attr.aria-label]="'Adicionar ' + featuredProduct.name + ' ao pedido'">
-          Adicionar ao pedido <img src="assets/shopping-cart.svg" width="30" height="30" alt="" />
-        </button>
-        <div class="showcase-footer">
-          <span>Escolha seus sabores. Comece com 15 unidades.</span>
-          <button type="button" class="autoplay-toggle" (click)="toggleAutoplay()"
-            [attr.aria-pressed]="autoplay">
-            {{ autoplay ? 'Pausar apresentação' : 'Retomar apresentação' }}
+        <div class="selected-flavor">
+          <div>
+            <strong>Brownie de {{ featuredProduct.name }}</strong>
+            <span>{{ featuredProduct.note }}</span>
+          </div>
+          <button class="button button-pink" type="button" (click)="openOrder(featuredProduct)">
+            Adicionar ao pedido
+            <img src="assets/shopping-cart.svg" width="24" height="24" alt="" />
           </button>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="partnership section" id="parceria">
-    <div class="wrap partnership-card reveal">
-      <div class="partnership-copy">
-        <p class="kicker">Uma parceria que acolhe</p>
-        <h2>Você vende.<br /><em>A Natália cuida junto.</em></h2>
+  <section class="package-story" id="embalagem" aria-labelledby="package-title">
+    <div class="package-photo">
+      <img
+        src="assets/embalagem-individual.webp"
+        alt="Brownie da Dulce di Naty em sua embalagem individual azul e rosa"
+        width="1200"
+        height="1600"
+        loading="lazy"
+      />
+    </div>
+    <div class="package-copy">
+      <p class="eyebrow">Embalados com todo o cuidado</p>
+      <h2 id="package-title">Prontos para sua revenda.</h2>
+      <p>
+        Nossos brownies são embalados individualmente, com o mesmo cuidado e qualidade,
+        prontos para você revender e encantar seus clientes.
+      </p>
+      <ul class="practical-facts">
+        <li><img src="assets/package.svg" width="28" height="28" alt="" /><span><strong>Pedido mínimo</strong>15 unidades</span></li>
+        <li><span class="fact-number" aria-hidden="true">10</span><span><strong>Validade</strong>10 dias</span></li>
+        <li><img src="assets/heart.svg" width="28" height="28" alt="" /><span><strong>Entrega ou retirada</strong>combinada</span></li>
+      </ul>
+      <button class="button button-chocolate" type="button" (click)="openOrder()">
+        Montar meu pedido <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="care-story" id="como-funciona" aria-labelledby="care-title">
+    <div class="shell care-grid">
+      <div class="care-copy">
+        <p class="eyebrow">Da cozinha para sua revenda</p>
+        <h2 id="care-title">Feitos com carinho. Cuidados de verdade.</h2>
         <p>
-          Além dos brownies, você recebe orientação e ideias para divulgar. E se algum item vencer
-          sem ser vendido, a Natália faz a troca do mesmo item.
+          Cada lote passa pela produção artesanal da Natália e segue embalado individualmente.
+          Além dos brownies, você recebe orientação e ideias para divulgar.
         </p>
-        <button class="text-button light" type="button" (click)="contactWhatsApp()">
-          Quero conversar sobre revenda <span>↗</span>
+        <p>
+          Se algum item vencer sem ser vendido, a Natália faz a troca do mesmo item.
+        </p>
+        <button class="text-link" type="button" (click)="contactWhatsApp()">
+          Conversar sobre revenda <span aria-hidden="true">↗</span>
         </button>
       </div>
-      <div class="quick-facts" aria-label="Informações da parceria">
-        <article>
-          <span>15</span>
-          <p>unidades<br />no pedido mínimo</p>
-        </article>
-        <article>
-          <span>10</span>
-          <p>dias de<br />validade</p>
-        </article>
-        <article>
-          <span>♡</span>
-          <p>suporte e<br />estratégias</p>
-        </article>
-      </div>
+      <figure class="care-photo care-photo-main">
+        <img
+          src="assets/brownies-producao.webp"
+          alt="Brownies da produção artesanal da Dulce di Naty mostrando a casquinha"
+          width="1200"
+          height="1600"
+          loading="lazy"
+        />
+      </figure>
+      <figure class="care-photo care-photo-small">
+        <img
+          src="assets/producao-embalada.webp"
+          alt="Lote de brownies da Dulce di Naty já embalados individualmente"
+          width="1200"
+          height="1600"
+          loading="lazy"
+        />
+      </figure>
     </div>
   </section>
 
-  <section class="gallery section" id="galeria" aria-labelledby="gallery-title">
-    <div class="wrap">
-      <div class="real-gallery-heading">
-        <p class="kicker">Um pouco da nossa produção</p>
-        <h2 id="gallery-title">Feitos com carinho.<br /><em>Prontos para sua revenda.</em></h2>
-        <p>Da casquinha à embalagem, cada detalhe tem o cuidado da Natália.</p>
+  <section class="order-steps" id="pedido" aria-labelledby="steps-title">
+    <div class="shell steps-grid">
+      <div class="steps-title">
+        <p class="eyebrow">Do pedido até você</p>
+        <h2 id="steps-title">Simples,<br />como deve ser.</h2>
       </div>
-      <div class="real-gallery-grid">
-        <figure class="real-gallery-feature">
-          <img src="assets/expositor-revenda.webp" alt="Brownies embalados da Dulce di Naty organizados em um expositor de madeira com a marca" width="1200" height="1600" loading="lazy" />
-          <figcaption>Uma apresentação que acolhe.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/brownies-producao.webp" alt="Brownies da produção da Natália, com a casquinha delicada e o interior de chocolate" width="1200" height="1600" loading="lazy" />
-          <figcaption>A nossa casquinha de perto.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/producao-embalada.webp" alt="Lote de brownies em embalagens individuais azuis e rosas da Dulce di Naty" width="1200" height="1600" loading="lazy" />
-          <figcaption>Carinho em cada unidade.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/brownies-embalados.webp" alt="Dois brownies com a embalagem original da Dulce di Naty sobre um prato branco" width="1200" height="1600" loading="lazy" />
-          <figcaption>Identidade em cada detalhe.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/embalagem-individual.webp" alt="Brownie de 100 g na embalagem individual com o rótulo da Dulce di Naty" width="1200" height="1600" loading="lazy" />
-          <figcaption>Embalagem individual de 100 g.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section class="how section">
-    <div class="wrap how-grid">
-      <div class="how-title reveal">
-        <p class="kicker">Do pedido até você</p>
-        <h2>Simples,<br /><em>como deve ser.</em></h2>
-      </div>
-      <ol class="steps reveal">
-        <li>
-          <b>01</b>
-          <div>
-            <strong>Escolha</strong>
-            <p>Monte seu pedido com no mínimo 15 brownies.</p>
-          </div>
-        </li>
-        <li>
-          <b>02</b>
-          <div>
-            <strong>Combine</strong>
-            <p>A Natália envia a cotação e confirma os detalhes.</p>
-          </div>
-        </li>
-        <li>
-          <b>03</b>
-          <div>
-            <strong>Receba</strong>
-            <p>Entrega em bairros próximos ou retirada combinada.</p>
-          </div>
-        </li>
+      <ol class="steps">
+        <li><span>01</span><div><strong>Escolha</strong><p>Monte seu pedido com no mínimo 15 brownies.</p></div></li>
+        <li><span>02</span><div><strong>Combine</strong><p>A Natália envia a cotação e confirma os detalhes.</p></div></li>
+        <li><span>03</span><div><strong>Receba</strong><p>Entrega em bairros próximos ou retirada combinada.</p></div></li>
       </ol>
     </div>
-    <div class="wrap same-day reveal">
-      <span>✦</span>
-      <p>
-        <strong>Pediu pela manhã?</strong> Havendo disponibilidade, você pode receber no mesmo dia.
-      </p>
-      <span>♡</span>
+    <div class="shell availability">
+      <p><strong>Pediu pela manhã?</strong> Havendo disponibilidade, você pode receber no mesmo dia.</p>
     </div>
   </section>
 
-  <section class="cta section">
-    <div class="wrap cta-inner reveal">
-      <img
-        class="mascot-sticker"
-        src="assets/mascote.webp"
-        alt="Mascote brownie da Dulce di Naty"
-        width="280"
-        height="300"
-      />
+  <section class="final-cta">
+    <div class="shell final-cta-inner">
+      <img src="assets/mascote.webp" alt="Mascote brownie da Dulce di Naty" width="220" height="236" loading="lazy" />
       <div>
-        <p class="kicker">Sua revenda pode começar hoje</p>
+        <p class="eyebrow">Sua revenda pode começar hoje</p>
         <h2>Vamos adoçar essa ideia?</h2>
         <p>Escolha seus brownies e envie sua solicitação pelo WhatsApp.</p>
       </div>
-      <button class="pill pill-light" type="button" (click)="openOrder()">
-        Montar meu pedido ♡
-      </button>
+      <button class="button button-cream" type="button" (click)="openOrder()">Montar meu pedido</button>
     </div>
   </section>
 </main>
 
 <footer class="footer">
-  <div class="wrap footer-inner">
-    <a class="brand footer-brand" href="#inicio"
-      ><img src="assets/logo.webp" width="52" height="52" alt="" /><span
-        >Dulce di Naty<small>doces com afeto</small></span
-      ></a
-    >
+  <div class="shell footer-inner">
+    <a href="#inicio" aria-label="Dulce di Naty — voltar ao início">
+      <img src="assets/logo.webp" width="66" height="66" alt="Dulce di Naty" />
+    </a>
     <p>Brownies artesanais para revenda.</p>
     <div>
-      <a href="https://www.instagram.com/dulce_dinaty/" target="_blank" rel="noopener noreferrer"
-        >Instagram ↗</a
-      ><button type="button" (click)="contactWhatsApp()">WhatsApp ↗</button>
+      <a href="https://www.instagram.com/dulce_dinaty/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      <button type="button" (click)="contactWhatsApp()">WhatsApp ↗</button>
     </div>
     <small>© {{ currentYear }} Dulce di Naty</small>
   </div>
 </footer>
+
 @if (totalUnits > 0) {
-<button class="floating-order" type="button" (click)="openOrder()">
-  <span>{{ totalUnits }}</span
-  ><b>Montar pedido</b>
-</button>
+  <button class="floating-cart" type="button" (click)="openOrder()" [attr.aria-label]="'Abrir pedido com ' + totalUnits + ' unidades'">
+    <img src="assets/shopping-cart.svg" width="22" height="22" alt="" />
+    <span>{{ totalUnits }}</span>
+  </button>
 }
 
-<dialog
-  #orderDialog
-  class="order-modal"
-  aria-labelledby="modal-title"
-  (click)="closeOnBackdrop($event, orderDialog)"
->
+<dialog #orderDialog class="order-modal" aria-labelledby="modal-title" (click)="closeOnBackdrop($event, orderDialog)">
   <div class="modal-shell">
-    <button class="modal-close" type="button" (click)="closeOrder()" aria-label="Fechar pedido">
-      ×
-    </button>
-    <div class="modal-heading">
-      <h2 id="modal-title">Montar pedido</h2>
-      <p>Escolha os sabores e adicione ao seu pedido.</p>
+    <button class="modal-close" type="button" (click)="closeOrder()" aria-label="Fechar pedido">×</button>
+    <div class="modal-header">
+      <p class="eyebrow">Monte seu pedido</p>
+      <h2 id="modal-title">Escolha os sabores</h2>
+      <p>Selecione as quantidades de cada brownie. O pedido mínimo é de 15 unidades.</p>
     </div>
-    <div class="modal-main">
-      <div class="modal-selection">
-        <div class="modal-flavors-list" aria-label="Sabores disponíveis">
-          @for (product of products; track product.id) {
-            <button type="button" class="flavor-chip"
-              [class.active]="selectedProduct.id === product.id"
-              [attr.aria-pressed]="selectedProduct.id === product.id"
-              (click)="selectProduct(product)">{{ product.name }}</button>
-          }
-        </div>
-        <div class="modal-product">
-          <img [src]="selectedProduct.image" [alt]="'Brownie ' + selectedProduct.name"
-            width="420" height="420" />
-          <div class="modal-product-copy">
-            <h3>{{ selectedProduct.name }}</h3>
-            <p>{{ selectedProduct.note }}. Intenso e irresistível.</p>
-            <span class="modal-accent" aria-hidden="true"></span>
-            <p class="modal-product-meta">Brownie artesanal • 100 g</p>
-            <div class="quantity" aria-label="Quantidade para adicionar">
-              <button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">−</button>
-              <strong aria-live="polite">{{ modalQuantity }}</strong>
-              <button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">+</button>
-            </div>
-            <button class="pill pill-pink modal-add" type="button" (click)="addSelectedProduct()">
-              Adicionar ao pedido
-            </button>
+
+    <div class="modal-flavors" aria-label="Sabores disponíveis">
+      @for (product of products; track product.id) {
+        <button
+          type="button"
+          [class.active]="selectedProduct.id === product.id"
+          (click)="selectProduct(product)"
+        >
+          <span>{{ product.name }}</span>
+          @if ((cart[product.id] || 0) > 0) { <b>{{ cart[product.id] }}</b> }
+        </button>
+      }
+    </div>
+
+    <div class="modal-product">
+      <img [src]="selectedProduct.image" [alt]="'Brownie ' + selectedProduct.name" width="260" height="260" />
+      <div class="modal-product-copy">
+        <span>Brownie artesanal • 100 g</span>
+        <h3>{{ selectedProduct.name }}</h3>
+        <p>{{ selectedProduct.note }}.</p>
+        <div class="quantity-row">
+          <span>Quantidade</span>
+          <div class="quantity">
+            <button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">−</button>
+            <strong>{{ modalQuantity }}</strong>
+            <button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">+</button>
           </div>
         </div>
+        <button class="button button-pink full" type="button" (click)="addSelectedProduct()">
+          {{ (cart[selectedProduct.id] || 0) > 0 ? 'Atualizar no pedido' : 'Adicionar ao pedido' }}
+        </button>
       </div>
-      <div class="order-summary">
-        <h3>Seu pedido</h3>
+    </div>
+
+    <div class="order-summary">
+      <div class="summary-head">
+        <div><span>Seu pedido</span><strong>{{ totalUnits }} {{ totalUnits === 1 ? 'unidade' : 'unidades' }}</strong></div>
+        <div class="progress" role="progressbar" aria-label="Progresso do pedido mínimo" [attr.aria-valuenow]="totalUnits" aria-valuemin="0" [attr.aria-valuemax]="minimumOrder"><i [style.width.%]="progress"></i></div>
+      </div>
+
       <div class="summary-items">
         @if (totalUnits === 0) {
-          <p class="empty">Escolha seus brownies. O mínimo é 15 unidades.</p>
+          <p class="empty">Seu pedido ainda está vazio.</p>
         } @else {
           @for (product of products; track product.id) {
             @if ((cart[product.id] || 0) > 0) {
               <div class="summary-row">
-                <span>{{ product.name }}</span>
-                <strong>{{ cart[product.id] }}</strong>
-                <button type="button" (click)="removeProduct(product.id)"
-                  [attr.aria-label]="'Remover ' + product.name + ' do pedido'">&#128465;</button>
+                <button type="button" (click)="selectProduct(product)"><strong>{{ product.name }}</strong></button>
+                <span>{{ cart[product.id] }} un.</span>
+                <button type="button" (click)="removeProduct(product.id)">remover</button>
               </div>
             }
           }
         }
       </div>
-      <div class="summary-total"><strong>Total</strong><span><b>{{ totalUnits }}</b> de {{ minimumOrder }} unidades</span></div>
-      <div class="progress" role="progressbar" [attr.aria-valuenow]="totalUnits"
-        [attr.aria-valuemin]="0" [attr.aria-valuemax]="minimumOrder"
-        [attr.aria-label]="'Pedido mínimo de ' + minimumOrder + ' unidades'">
-        <i [style.width.%]="progress"></i>
-      </div>
-      <button
-        class="pill pill-pink full summary-submit"
-        type="button"
-        (click)="sendWhatsApp()"
-        [disabled]="totalUnits < minimumOrder"
-      >
-        {{
-          missingUnits > 0
-            ? 'Faltam ' + missingUnits + (missingUnits === 1 ? ' unidade' : ' unidades')
-            : 'Enviar pedido pelo WhatsApp ↗'
-        }}
+
+      <button class="button button-chocolate full" type="button" (click)="sendWhatsApp()" [disabled]="totalUnits < minimumOrder">
+        {{ missingUnits > 0 ? 'Faltam ' + missingUnits + (missingUnits === 1 ? ' unidade' : ' unidades') : 'Enviar pedido pelo WhatsApp' }}
       </button>
-      <p class="summary-note">Pedido mínimo de 15 unidades para enviar.</p>
-      </div>
     </div>
   </div>
 </dialog>
 
-<dialog
-  #infoDialog
-  class="info-modal"
-  aria-labelledby="info-title"
-  (click)="closeOnBackdrop($event, infoDialog)"
->
+<dialog #infoDialog class="info-modal" aria-labelledby="info-title" (click)="closeOnBackdrop($event, infoDialog)">
   <div class="info-shell">
-    <button class="modal-close" type="button" (click)="closeInfo()" aria-label="Fechar informações">
-      ×
-    </button>
-    <p class="kicker">Informações rápidas</p>
-    <h2 id="info-title">Produção à tarde, carinho o dia inteiro.</h2>
+    <button class="modal-close" type="button" (click)="closeInfo()" aria-label="Fechar informações">×</button>
+    <p class="eyebrow">Informações da revenda</p>
+    <h2 id="info-title">Comece com 15 unidades.</h2>
     <ul>
-      <li>Pedido mínimo de 15 unidades. Você pode combinar os sabores.</li>
-      <li>Produção das 13h30 às 17h30.</li>
-      <li>Pedidos pela manhã podem ser recebidos no mesmo dia, conforme disponibilidade.</li>
+      <li>Brownies de 100 g, embalados individualmente.</li>
+      <li>Validade de 10 dias.</li>
       <li>Entrega em bairros próximos ou retirada combinada.</li>
+      <li>Cotação e disponibilidade confirmadas pelo WhatsApp.</li>
     </ul>
-    <button class="pill pill-dark full" type="button" (click)="contactWhatsApp()">
-      Confirmar pelo WhatsApp
-    </button>
+    <button class="button button-chocolate full" type="button" (click)="closeInfo(); openOrder()">Montar pedido</button>
   </div>
 </dialog>
