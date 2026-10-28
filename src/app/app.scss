@@ -479,71 +479,48 @@ h3 {
   filter: brightness(0) invert(1);
 }
 
-/* Packaging - Centered Showcase */
+/* Packaging */
 .package-story {
-  padding: 72px 0 80px;
   background: var(--cream);
 }
 
-.package-layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.package-copy {
-  padding: 0;
-}
-
-.package-copy h2 {
-  max-width: 600px;
-  margin-inline: auto;
-  font-size: clamp(42px, 5.5vw, 68px);
-  line-height: 0.95;
-}
-
-.package-copy > p:not(.eyebrow) {
-  max-width: 540px;
-  margin: 16px auto 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.45;
-}
-
 .package-photo {
-  margin: 36px auto 28px;
+  overflow: hidden;
+  height: 320px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
+  justify-content: center;
+  padding: 20px;
 }
 
 .package-photo img {
-  max-width: min(84vw, 360px);
-  height: auto;
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
-  filter: drop-shadow(0 20px 32px rgba(59, 20, 13, 0.16));
-  transition: transform 300ms ease;
+  filter: drop-shadow(0 18px 30px rgba(59, 20, 13, 0.18));
 }
 
-.package-photo img:hover {
-  transform: translateY(-4px) scale(1.02);
+.package-copy {
+  padding: 42px 20px 52px;
 }
 
-.package-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+.package-copy h2 {
+  max-width: 360px;
+  font-size: clamp(47px, 12vw, 58px);
+  line-height: 0.94;
+}
+
+.package-copy > p:not(.eyebrow) {
+  max-width: 520px;
+  margin: 16px 0 20px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .practical-facts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px 28px;
-  margin: 0 0 28px;
+  display: grid;
+  gap: 10px;
+  margin: 0 0 22px;
   padding: 0;
   list-style: none;
 }
@@ -551,15 +528,14 @@ h3 {
 .practical-facts li {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   color: #4a3733;
-  font-size: 13px;
-  text-align: left;
+  font-size: 12px;
 }
 
 .practical-facts img {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
 }
 
 .practical-facts li:first-child img {
@@ -579,8 +555,8 @@ h3 {
 .fact-number {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   flex: 0 0 auto;
   border: 2px solid var(--pink);
   border-radius: 8px;
@@ -589,12 +565,12 @@ h3 {
   font-weight: 900;
 }
 
-.package-details .button {
+.package-copy .button {
   width: 100%;
-  max-width: 320px;
+  max-width: 360px;
+  justify-content: space-between;
 }
 
-/* Production integrated into the story */
 .care-story {
   padding: 78px 0;
   background: #f6dce5;
@@ -1328,20 +1304,37 @@ dialog::backdrop {
   }
 
   .package-story {
-    padding: 96px 0 104px;
+    display: grid;
+    min-height: 620px;
+    grid-template-columns: 55% 45%;
+    align-items: center;
   }
 
   .package-photo {
-    margin: 44px auto 36px;
+    height: 100%;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
   }
 
   .package-photo img {
-    max-width: 440px;
+    max-width: min(100%, 460px);
+    max-height: 480px;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 38px rgba(59, 20, 13, 0.2));
   }
 
-  .practical-facts {
-    gap: 36px;
-    margin-bottom: 34px;
+  .package-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px clamp(40px, 5vw, 78px);
+  }
+
+  .package-copy h2 {
+    font-size: clamp(62px, 5.2vw, 80px);
   }
 
   .care-story {
