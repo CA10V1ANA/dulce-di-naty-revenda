@@ -164,30 +164,36 @@
   </section>
 
   <section class="package-story" id="embalagem" aria-labelledby="package-title">
-    <div class="package-photo">
-      <img
-        src="assets/embalagem-individual.webp"
-        alt="Brownie da Dulce di Naty em sua embalagem individual azul e rosa"
-        width="1200"
-        height="1600"
-        loading="lazy"
-      />
-    </div>
-    <div class="package-copy">
-      <p class="eyebrow">Embalados com todo o cuidado</p>
-      <h2 id="package-title">Prontos para sua revenda.</h2>
-      <p>
-        Nossos brownies são embalados individualmente, com o mesmo cuidado e qualidade,
-        prontos para você revender e encantar seus clientes.
-      </p>
-      <ul class="practical-facts">
-        <li><img src="assets/package.svg" width="28" height="28" alt="" /><span><strong>Pedido mínimo</strong>15 unidades</span></li>
-        <li><span class="fact-number" aria-hidden="true">10</span><span><strong>Validade</strong>10 dias</span></li>
-        <li><img src="assets/heart.svg" width="28" height="28" alt="" /><span><strong>Entrega ou retirada</strong>combinada</span></li>
-      </ul>
-      <button class="button button-chocolate" type="button" (click)="openOrder()">
-        Montar meu pedido <span aria-hidden="true">→</span>
-      </button>
+    <div class="shell package-layout">
+      <div class="package-copy">
+        <p class="eyebrow">Embalados com todo o cuidado</p>
+        <h2 id="package-title">Prontos para sua revenda.</h2>
+        <p>
+          Nossos brownies são embalados individualmente, com o mesmo cuidado e qualidade,
+          prontos para você revender e encantar seus clientes.
+        </p>
+      </div>
+
+      <figure class="package-photo">
+        <img
+          src="assets/embalagem-individual.png"
+          alt="Brownie da Dulce di Naty em embalagem individual de 100 g"
+          width="480"
+          height="480"
+          loading="lazy"
+        />
+      </figure>
+
+      <div class="package-details">
+        <ul class="practical-facts">
+          <li><img src="assets/package.svg" width="28" height="28" alt="" /><span><strong>Pedido mínimo</strong>15 unidades</span></li>
+          <li><span class="fact-number" aria-hidden="true">10</span><span><strong>Validade</strong>10 dias</span></li>
+          <li><img src="assets/heart.svg" width="28" height="28" alt="" /><span><strong>Entrega ou retirada</strong>combinada</span></li>
+        </ul>
+        <button class="button button-chocolate" type="button" (click)="openOrder()">
+          Montar meu pedido <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
   </section>
 </main>
@@ -198,9 +204,26 @@
       <img src="assets/logo.webp" width="66" height="66" alt="Dulce di Naty" />
     </a>
     <p>Brownies artesanais para revenda.</p>
-    <div>
-      <a href="https://www.instagram.com/dulce_dinaty/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
-      <button type="button" (click)="contactWhatsApp()">WhatsApp ↗</button>
+    <div class="footer-links">
+      <a
+        href="https://www.instagram.com/dulce_dinaty/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="footer-social-link"
+        aria-label="Instagram da Dulce di Naty"
+      >
+        <img src="assets/instagram.svg" width="20" height="20" alt="" />
+        <span>Instagram</span>
+      </a>
+      <button
+        type="button"
+        (click)="contactWhatsApp()"
+        class="footer-social-link"
+        aria-label="WhatsApp da Dulce di Naty"
+      >
+        <img src="assets/whatsapp.svg" width="20" height="20" alt="" />
+        <span>WhatsApp</span>
+      </button>
     </div>
     <small>© {{ currentYear }} Dulce di Naty</small>
   </div>
