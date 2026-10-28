@@ -242,86 +242,65 @@
     <button class="modal-close" type="button" (click)="closeOrder()" aria-label="Fechar pedido">
       ×
     </button>
-    <div class="modal-flavors" aria-label="Sabores disponíveis">
-      <span class="modal-flavors-label">Escolha o sabor:</span>
-      <div class="modal-flavors-list">
-        @for (product of products; track product.id) {
-          <button
-            type="button"
-            class="flavor-chip"
-            [class.active]="selectedProduct.id === product.id"
-            [class.has-items]="(cart[product.id] || 0) > 0"
-            (click)="selectProduct(product)"
-          >
-            <span>{{ product.name }}</span>
-            @if ((cart[product.id] || 0) > 0) {
-              <b>{{ cart[product.id] }}</b>
-            }
-          </button>
-        }
-      </div>
+    <div class="modal-heading">
+      <h2 id="modal-title">Montar pedido</h2>
+      <p>Escolha os sabores e adicione ao seu pedido.</p>
     </div>
-    <div class="modal-product">
-      <img
-        [src]="selectedProduct.image"
-        [alt]="'Brownie ' + selectedProduct.name"
-        width="420"
-        height="420"
-      />
-      <div>
-        <span>Brownie artesanal • 100g</span>
-        <h2 id="modal-title">{{ selectedProduct.name }}</h2>
-        <p>
-          {{ selectedProduct.note }}. A base artesanal e o peso de 100g são os mesmos em todas as
-          opções.
-        </p>
-      </div>
-    </div>
-    <div class="modal-controls">
-      <p>Quantidade deste recheio</p>
-      <div class="quantity">
-        <button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">
-          −</button
-        ><strong>{{ modalQuantity }}</strong
-        ><button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">
-          +
-        </button>
-      </div>
-      <button class="pill pill-pink" type="button" (click)="addSelectedProduct()">
-        {{ (cart[selectedProduct.id] || 0) > 0 ? 'Atualizar no pedido' : 'Adicionar ao pedido' }}
-      </button>
-    </div>
-    <div class="order-summary">
-      <div class="summary-head">
-        <div>
-          <span>Seu pedido</span
-          ><strong>{{ totalUnits }} {{ totalUnits === 1 ? 'unidade' : 'unidades' }}</strong>
+    <div class="modal-main">
+      <div class="modal-selection">
+        <div class="modal-flavors-list" aria-label="Sabores disponíveis">
+          @for (product of products; track product.id) {
+            <button type="button" class="flavor-chip"
+              [class.active]="selectedProduct.id === product.id"
+              [attr.aria-pressed]="selectedProduct.id === product.id"
+              (click)="selectProduct(product)">{{ product.name }}</button>
+          }
         </div>
-        <div class="progress"><i [style.width.%]="progress"></i></div>
+        <div class="modal-product">
+          <img [src]="selectedProduct.image" [alt]="'Brownie ' + selectedProduct.name"
+            width="420" height="420" />
+          <div class="modal-product-copy">
+            <h3>{{ selectedProduct.name }}</h3>
+            <p>{{ selectedProduct.note }}. Intenso e irresistível.</p>
+            <span class="modal-accent" aria-hidden="true"></span>
+            <p class="modal-product-meta">Brownie artesanal • 100 g</p>
+            <div class="quantity" aria-label="Quantidade para adicionar">
+              <button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">−</button>
+              <strong aria-live="polite">{{ modalQuantity }}</strong>
+              <button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">+</button>
+            </div>
+            <button class="pill pill-pink modal-add" type="button" (click)="addSelectedProduct()">
+              Adicionar ao pedido
+            </button>
+          </div>
+        </div>
       </div>
+      <div class="order-summary">
+        <h3>Seu pedido</h3>
       <div class="summary-items">
         @if (totalUnits === 0) {
           <p class="empty">Escolha seus brownies. O mínimo é 15 unidades.</p>
         } @else {
           @for (product of products; track product.id) {
             @if ((cart[product.id] || 0) > 0) {
-              <div class="summary-row" [class.active]="selectedProduct.id === product.id">
-                <button
-                  type="button"
-                  class="summary-row-select"
-                  (click)="selectProduct(product)"
-                >
-                  <strong>{{ product.name }}</strong>
-                </button>
-                <span>{{ cart[product.id] }} un.</span
-                ><button type="button" (click)="removeProduct(product.id)">remover</button>
+              <div class="summary-row">
+                <span>{{ product.name }}</span>
+                <strong>{{ cart[product.id] }}</strong>
+                <button type="button" (click)="removeProduct(product.id)"
+                  [attr.aria-label]="'Remover ' + product.name + ' do pedido'">&#128465;</button>
               </div>
             }
           }
         }
       </div>
+      <div class="summary-total"><strong>Total</strong><span><b>{{ totalUnits }}</b> de {{ minimumOrder }} unidades</span></div>
+      <div class="progress" role="progressbar" [attr.aria-valuenow]="totalUnits"
+        [attr.aria-valuemin]="0" [attr.aria-valuemax]="minimumOrder"
+        [attr.aria-label]="'Pedido mínimo de ' + minimumOrder + ' unidades'">
+        <i [style.width.%]="progress"></i>
+      </div>
       <button
-        class="pill pill-dark full"
+        class="pill pill-pink full summary-submit"
         type="button"
         (click)="sendWhatsApp()"
         [disabled]="totalUnits < minimumOrder"
@@ -332,6 +311,8 @@
             : 'Enviar pedido pelo WhatsApp ↗'
         }}
       </button>
+      <p class="summary-note">Pedido mínimo de 15 unidades para enviar.</p>
+      </div>
     </div>
   </div>
 </dialog>

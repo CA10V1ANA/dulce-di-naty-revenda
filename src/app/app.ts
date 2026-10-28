@@ -115,7 +115,7 @@ export class App implements AfterViewInit, OnDestroy {
 
   selectProduct(product: BrownieProduct): void {
     this.selectedProduct = product;
-    this.modalQuantity = this.cart[product.id] || 1;
+    this.modalQuantity = 1;
   }
 
   openOrder(product = this.selectedProduct): void {
@@ -132,7 +132,10 @@ export class App implements AfterViewInit, OnDestroy {
   }
 
   changeQuantity(delta: number): void { this.modalQuantity = Math.max(1, Math.min(99, this.modalQuantity + delta)); }
-  addSelectedProduct(): void { this.cart = { ...this.cart, [this.selectedProduct.id]: this.modalQuantity }; }
+  addSelectedProduct(): void {
+    this.cart = { ...this.cart, [this.selectedProduct.id]: (this.cart[this.selectedProduct.id] || 0) + this.modalQuantity };
+    this.modalQuantity = 1;
+  }
 
   removeProduct(productId: string): void {
     const nextCart = { ...this.cart };
