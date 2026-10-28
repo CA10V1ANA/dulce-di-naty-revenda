@@ -19,7 +19,7 @@
     <div class="nav-links" id="main-menu" [class.open]="menuOpen">
       <a href="#brownies" (click)="closeMenu()">Brownies</a>
       <a href="#como-funciona" (click)="closeMenu()">Como funciona</a>
-      <a href="#pedido" (click)="closeMenu()">Montar pedido</a>
+      <button type="button" (click)="closeMenu(); openOrder()">Montar pedido</button>
     </div>
 
     <div class="nav-actions">
@@ -188,35 +188,6 @@
           loading="lazy"
         />
       </figure>
-    </div>
-  </section>
-
-  <section class="order-steps" id="pedido" aria-labelledby="steps-title">
-    <div class="shell steps-grid">
-      <div class="steps-title">
-        <p class="eyebrow">Do pedido até você</p>
-        <h2 id="steps-title">Simples,<br />como deve ser.</h2>
-      </div>
-      <ol class="steps">
-        <li><span>01</span><div><strong>Escolha</strong><p>Monte seu pedido com no mínimo 15 brownies.</p></div></li>
-        <li><span>02</span><div><strong>Combine</strong><p>A Natália envia a cotação e confirma os detalhes.</p></div></li>
-        <li><span>03</span><div><strong>Receba</strong><p>Entrega em bairros próximos ou retirada combinada.</p></div></li>
-      </ol>
-    </div>
-    <div class="shell availability">
-      <p><strong>Pediu pela manhã?</strong> Havendo disponibilidade, você pode receber no mesmo dia.</p>
-    </div>
-  </section>
-
-  <section class="final-cta">
-    <div class="shell final-cta-inner">
-      <img src="assets/mascote.webp" alt="Mascote brownie da Dulce di Naty" width="220" height="236" loading="lazy" />
-      <div>
-        <p class="eyebrow">Sua revenda pode começar hoje</p>
-        <h2>Vamos adoçar essa ideia?</h2>
-        <p>Escolha seus brownies e envie sua solicitação pelo WhatsApp.</p>
-      </div>
-      <button class="button button-cream" type="button" (click)="openOrder()">Montar meu pedido</button>
     </div>
   </section>
 </main>
