@@ -235,70 +235,111 @@
 <dialog #orderDialog class="order-modal" aria-labelledby="modal-title" (click)="closeOnBackdrop($event, orderDialog)">
   <div class="modal-shell">
     <button class="modal-close" type="button" (click)="closeOrder()" aria-label="Fechar pedido">×</button>
-    <div class="modal-header">
-      <p class="eyebrow">Monte seu pedido</p>
-      <h2 id="modal-title">Escolha os sabores</h2>
-      <p>Selecione as quantidades de cada brownie. O pedido mínimo é de 15 unidades.</p>
-    </div>
 
-    <div class="modal-flavors" aria-label="Sabores disponíveis">
-      @for (product of products; track product.id) {
-        <button
-          type="button"
-          [class.active]="selectedProduct.id === product.id"
-          (click)="selectProduct(product)"
-        >
-          <span>{{ product.name }}</span>
-          @if ((cart[product.id] || 0) > 0) { <b>{{ cart[product.id] }}</b> }
-        </button>
-      }
-    </div>
+    <div class="modal-layout">
+      <!-- Coluna Principal (Esquerda) -->
+      <div class="modal-main">
+        <div class="modal-header">
+          <h2 id="modal-title">Montar pedido</h2>
+          <p>Escolha os sabores e adicione ao seu pedido.</p>
+        </div>
 
-    <div class="modal-product">
-      <img [src]="selectedProduct.image" [alt]="'Brownie ' + selectedProduct.name" width="260" height="260" />
-      <div class="modal-product-copy">
-        <span>Brownie artesanal • 100 g</span>
-        <h3>{{ selectedProduct.name }}</h3>
-        <p>{{ selectedProduct.note }}.</p>
-        <div class="quantity-row">
-          <span>Quantidade</span>
-          <div class="quantity">
-            <button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">−</button>
-            <strong>{{ modalQuantity }}</strong>
-            <button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">+</button>
+        <div class="modal-flavors" role="tablist" aria-label="Sabores disponíveis">
+          @for (product of products; track product.id) {
+            <button
+              type="button"
+              role="tab"
+              [class.active]="selectedProduct.id === product.id"
+              [attr.aria-selected]="selectedProduct.id === product.id"
+              (click)="selectProduct(product)"
+            >
+              <span>{{ product.name }}</span>
+            </button>
+          }
+        </div>
+
+        <div class="modal-product">
+          <img
+            [src]="selectedProduct.image"
+            [alt]="'Brownie ' + selectedProduct.name"
+            width="260"
+            height="260"
+          />
+          <div class="modal-product-copy">
+            <h3>{{ selectedProduct.name }}</h3>
+            <p>{{ selectedProduct.note }}</p>
+            <span class="product-weight">Brownie artesanal • 100 g</span>
+
+            <div class="quantity-pill">
+              <button type="button" (click)="changeQuantity(-1)" aria-label="Diminuir quantidade">−</button>
+              <strong>{{ modalQuantity }}</strong>
+              <button type="button" (click)="changeQuantity(1)" aria-label="Aumentar quantidade">+</button>
+            </div>
+
+            <button class="button-add" type="button" (click)="addSelectedProduct()">
+              {{ (cart[selectedProduct.id] || 0) > 0 ? 'Atualizar no pedido' : 'Adicionar ao pedido' }}
+            </button>
           </div>
         </div>
-        <button class="button button-pink full" type="button" (click)="addSelectedProduct()">
-          {{ (cart[selectedProduct.id] || 0) > 0 ? 'Atualizar no pedido' : 'Adicionar ao pedido' }}
-        </button>
-      </div>
-    </div>
-
-    <div class="order-summary">
-      <div class="summary-head">
-        <div><span>Seu pedido</span><strong>{{ totalUnits }} {{ totalUnits === 1 ? 'unidade' : 'unidades' }}</strong></div>
-        <div class="progress" role="progressbar" aria-label="Progresso do pedido mínimo" [attr.aria-valuenow]="totalUnits" aria-valuemin="0" [attr.aria-valuemax]="minimumOrder"><i [style.width.%]="progress"></i></div>
       </div>
 
-      <div class="summary-items">
-        @if (totalUnits === 0) {
-          <p class="empty">Seu pedido ainda está vazio.</p>
-        } @else {
-          @for (product of products; track product.id) {
-            @if ((cart[product.id] || 0) > 0) {
-              <div class="summary-row">
-                <button type="button" (click)="selectProduct(product)"><strong>{{ product.name }}</strong></button>
-                <span>{{ cart[product.id] }} un.</span>
-                <button type="button" (click)="removeProduct(product.id)">remover</button>
-              </div>
+      <!-- Coluna Resumo / Card "Seu pedido" (Direita) -->
+      <div class="order-summary">
+        <h3 class="summary-title">Seu pedido</h3>
+
+        <div class="summary-items">
+          @if (totalUnits === 0) {
+            <p class="empty">Seu pedido ainda está vazio.</p>
+          } @else {
+            @for (product of products; track product.id) {
+              @if ((cart[product.id] || 0) > 0) {
+                <div class="summary-row">
+                  <span class="item-name">{{ product.name }}</span>
+                  <span class="item-qty">{{ cart[product.id] }}</span>
+                  <button
+                    class="item-remove"
+                    type="button"
+                    (click)="removeProduct(product.id)"
+                    aria-label="Remover do pedido"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              }
             }
           }
-        }
-      </div>
+        </div>
 
-      <button class="button button-chocolate full" type="button" (click)="sendWhatsApp()" [disabled]="totalUnits < minimumOrder">
-        {{ missingUnits > 0 ? 'Faltam ' + missingUnits + (missingUnits === 1 ? ' unidade' : ' unidades') : 'Enviar pedido pelo WhatsApp' }}
-      </button>
+        <div class="summary-total-row">
+          <strong>Total</strong>
+          <span><b>{{ totalUnits }}</b> de {{ minimumOrder }} unidades</span>
+        </div>
+
+        <div
+          class="progress"
+          role="progressbar"
+          aria-label="Progresso do pedido mínimo"
+          [attr.aria-valuenow]="totalUnits"
+          aria-valuemin="0"
+          [attr.aria-valuemax]="minimumOrder"
+        >
+          <i [style.width.%]="progress"></i>
+        </div>
+
+        <button
+          class="summary-submit-btn"
+          type="button"
+          (click)="sendWhatsApp()"
+          [disabled]="totalUnits < minimumOrder"
+        >
+          {{ missingUnits > 0 ? 'Faltam ' + missingUnits + (missingUnits === 1 ? ' unidade' : ' unidades') : 'Enviar pedido pelo WhatsApp' }}
+        </button>
+
+        <p class="summary-helper">Pedido mínimo de {{ minimumOrder }} unidades para enviar.</p>
+      </div>
     </div>
   </div>
 </dialog>

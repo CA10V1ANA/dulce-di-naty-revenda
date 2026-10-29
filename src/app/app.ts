@@ -23,11 +23,36 @@ export class App {
   readonly minimumOrder = 15;
   readonly currentYear = new Date().getFullYear();
   readonly products: BrownieProduct[] = [
-    { id: 'ninho', name: 'Ninho', note: 'Recheio cremoso de leite Ninho', image: 'assets/ninho.webp' },
-    { id: 'brigadeiro', name: 'Brigadeiro', note: 'Brigadeiro tradicional cremoso', image: 'assets/brigadeiro.webp' },
-    { id: 'dois-amores', name: '2 Amores', note: 'Chocolate e Ninho', image: 'assets/dois-amores.webp' },
-    { id: 'crocante', name: 'Crocante', note: 'Crocante de amendoim', image: 'assets/crocante.webp' },
-    { id: 'ovomaltine', name: 'Ovo Maltine', note: 'Cremoso com crocância de Ovomaltine', image: 'assets/showcase-ovomaltine.webp' },
+    {
+      id: 'ninho',
+      name: 'Ninho',
+      note: 'Massa intensa de chocolate com recheio cremoso de Ninho.',
+      image: 'assets/ninho.webp',
+    },
+    {
+      id: 'brigadeiro',
+      name: 'Brigadeiro',
+      note: 'Brownie de chocolate com recheio cremoso de brigadeiro. Intenso e irresistível.',
+      image: 'assets/brigadeiro.webp',
+    },
+    {
+      id: 'dois-amores',
+      name: '2 Amores',
+      note: 'O equilíbrio perfeito entre chocolate tradicional e Ninho cremoso.',
+      image: 'assets/dois-amores.webp',
+    },
+    {
+      id: 'ovomaltine',
+      name: 'Ovo Maltine',
+      note: 'Cremoso e irresistível com a crocância clássica de Ovomaltine.',
+      image: 'assets/showcase-ovomaltine.webp',
+    },
+    {
+      id: 'crocante',
+      name: 'Crocante',
+      note: 'Recheio cremoso com crocante especial de amendoim.',
+      image: 'assets/crocante.webp',
+    },
   ];
 
   cart: Record<string, number> = {};
@@ -54,7 +79,7 @@ export class App {
   selectProduct(product: BrownieProduct): void {
     this.selectedProduct = product;
     this.activeFlavorIndex = this.products.findIndex(item => item.id === product.id);
-    this.modalQuantity = 1;
+    this.modalQuantity = this.cart[product.id] || 1;
   }
 
   openOrder(product = this.featuredProduct): void {
@@ -77,9 +102,8 @@ export class App {
   addSelectedProduct(): void {
     this.cart = {
       ...this.cart,
-      [this.selectedProduct.id]: (this.cart[this.selectedProduct.id] || 0) + this.modalQuantity,
+      [this.selectedProduct.id]: this.modalQuantity,
     };
-    this.modalQuantity = 1;
   }
 
   removeProduct(productId: string): void {
