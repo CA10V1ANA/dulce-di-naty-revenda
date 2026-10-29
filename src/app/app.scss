@@ -715,6 +715,12 @@ h3 {
   height: 24px;
   border-radius: 0 !important;
   display: block;
+  filter: brightness(0) invert(1);
+  transition: filter 180ms ease;
+}
+
+.footer-social-link:hover img {
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(246, 201, 214, 0.7));
 }
 
 .footer-inner small {
