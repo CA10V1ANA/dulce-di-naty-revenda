@@ -166,34 +166,22 @@
   <section class="package-story" id="embalagem" aria-labelledby="package-title">
     <div class="package-photo">
       <div
-        #spinStage
-        class="spin-stage"
+        #brownie3d
+        class="brownie-3d"
         role="img"
-        aria-label="Brownie da Dulce di Naty em sua embalagem individual azul e rosa, girando em 360 graus. Arraste para girar."
+        aria-label="Modelo 3D do brownie da Dulce di Naty em sua embalagem individual azul e rosa. Arraste para girar."
       >
-        <div #spinner class="spinner">
-          <img
-            class="spin-face spin-front"
-            src="assets/embalagem-individual.png"
-            alt=""
-            width="640"
-            height="576"
-            loading="lazy"
-            draggable="false"
-          />
-          <img
-            class="spin-face spin-back"
-            src="assets/embalagem-individual.png"
-            alt=""
-            width="640"
-            height="576"
-            loading="lazy"
-            draggable="false"
-          />
-        </div>
-        <span class="spin-shadow" aria-hidden="true"></span>
+        <img
+          class="brownie-3d-fallback"
+          src="assets/embalagem-individual.png"
+          alt=""
+          width="640"
+          height="576"
+          loading="lazy"
+          draggable="false"
+        />
       </div>
-      <p class="spin-hint" aria-hidden="true">↔ Arraste para girar</p>
+      <p class="spin-hint" aria-hidden="true">↻ Arraste para ver em 3D</p>
     </div>
     <div class="package-copy">
       <p class="eyebrow">Embalados com todo o cuidado</p>
