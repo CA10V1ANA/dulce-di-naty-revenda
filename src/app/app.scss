@@ -486,52 +486,18 @@ h3 {
 
 .package-photo {
   overflow: hidden;
-  height: 380px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.package-photo {
-  position: relative;
-  flex-direction: column;
-}
-
-.brownie-3d {
-  position: relative;
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.brownie-3d:active {
-  cursor: grabbing;
-}
-
-.brownie-3d-fallback {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.package-photo img {
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
   filter: drop-shadow(0 18px 30px rgba(59, 20, 13, 0.18));
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.brownie-3d.ready .brownie-3d-fallback {
-  opacity: 0;
-}
-
-.spin-hint {
-  margin: 14px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 0.04em;
 }
 
 .package-copy {
@@ -1051,6 +1017,7 @@ dialog::backdrop {
 /* Progressive scroll depth. The page stays fully functional without it. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
+    .package-photo img,
     .care-photo-main img {
       animation: quiet-depth linear both;
       animation-timeline: view();
@@ -1366,8 +1333,11 @@ dialog::backdrop {
     padding: 40px;
   }
 
-  .brownie-3d {
-    width: min(100%, 560px);
+  .package-photo img {
+    max-width: min(100%, 460px);
+    max-height: 480px;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 38px rgba(59, 20, 13, 0.2));
   }
 
   .package-copy {

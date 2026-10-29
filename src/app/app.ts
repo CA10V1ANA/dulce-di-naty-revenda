@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 interface BrownieProduct {
   id: string;
@@ -15,12 +15,7 @@ interface BrownieProduct {
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App implements AfterViewInit, OnDestroy {
-  @ViewChild('brownie3d') private brownie3d?: ElementRef<HTMLElement>;
-  private readonly zone = inject(NgZone);
-  private destroyed = false;
-  private disposeBrownie3D?: () => void;
-  private brownie3dObserver?: IntersectionObserver;
+export class App {
   @ViewChild('orderDialog') private orderDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild('infoDialog') private infoDialog!: ElementRef<HTMLDialogElement>;
 
@@ -101,41 +96,6 @@ export class App implements AfterViewInit, OnDestroy {
       .join('\n');
     const message = `Olá, Natália! Montei esta solicitação de brownies para revenda:\n\n${items}\n\nPode me enviar a cotação e confirmar os recheios disponíveis?`;
     window.open(`https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
-  }
-
-  ngAfterViewInit(): void {
-    const container = this.brownie3d?.nativeElement;
-    if (!container || typeof window === 'undefined') return;
-
-    this.zone.runOutsideAngular(() => {
-      this.brownie3dObserver = new IntersectionObserver(
-        (entries) => {
-          if (!entries[0]?.isIntersecting) return;
-          this.brownie3dObserver?.disconnect();
-          this.brownie3dObserver = undefined;
-
-          import('./brownie-3d').then(({ mountBrownie3D }) => {
-            if (this.destroyed) return;
-            mountBrownie3D(container, 'assets/logo.webp').then((dispose) => {
-              if (this.destroyed) {
-                dispose();
-              } else {
-                this.disposeBrownie3D = dispose;
-              }
-            });
-          });
-        },
-        { rootMargin: '200px' },
-      );
-
-      this.brownie3dObserver.observe(container);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed = true;
-    this.brownie3dObserver?.disconnect();
-    this.disposeBrownie3D?.();
   }
 
   contactWhatsApp(): void {
