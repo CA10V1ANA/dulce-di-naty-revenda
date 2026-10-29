@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild, inject } from '@angular/core';
 
 interface BrownieProduct {
   id: string;
@@ -15,7 +15,16 @@ interface BrownieProduct {
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements AfterViewInit, OnDestroy {
+  @ViewChild('spinStage') private spinStage?: ElementRef<HTMLElement>;
+  @ViewChild('spinner') private spinner?: ElementRef<HTMLElement>;
+  private readonly zone = inject(NgZone);
+  private spinAngle = -25;
+  private spinVelocity = 0;
+  private spinDragging = false;
+  private spinLastX = 0;
+  private spinFrame = 0;
+  private spinCleanup: Array<() => void> = [];
   @ViewChild('orderDialog') private orderDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild('infoDialog') private infoDialog!: ElementRef<HTMLDialogElement>;
 
@@ -96,6 +105,72 @@ export class App {
       .join('\n');
     const message = `Olá, Natália! Montei esta solicitação de brownies para revenda:\n\n${items}\n\nPode me enviar a cotação e confirmar os recheios disponíveis?`;
     window.open(`https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+  }
+
+  ngAfterViewInit(): void {
+    const stage = this.spinStage?.nativeElement;
+    const spinner = this.spinner?.nativeElement;
+    if (!stage || !spinner || typeof window === 'undefined') return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const autoSpeed = reducedMotion ? 0 : 0.45; // graus por quadro
+
+    this.zone.runOutsideAngular(() => {
+      const onDown = (event: PointerEvent) => {
+        this.spinDragging = true;
+        this.spinLastX = event.clientX;
+        this.spinVelocity = 0;
+        stage.classList.add('dragging');
+        stage.setPointerCapture(event.pointerId);
+      };
+      const onMove = (event: PointerEvent) => {
+        if (!this.spinDragging) return;
+        const delta = (event.clientX - this.spinLastX) * 0.6;
+        this.spinLastX = event.clientX;
+        this.spinAngle += delta;
+        this.spinVelocity = delta;
+      };
+      const onUp = (event: PointerEvent) => {
+        if (!this.spinDragging) return;
+        this.spinDragging = false;
+        stage.classList.remove('dragging');
+        if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+      };
+
+      stage.addEventListener('pointerdown', onDown);
+      stage.addEventListener('pointermove', onMove);
+      stage.addEventListener('pointerup', onUp);
+      stage.addEventListener('pointercancel', onUp);
+      this.spinCleanup.push(() => {
+        stage.removeEventListener('pointerdown', onDown);
+        stage.removeEventListener('pointermove', onMove);
+        stage.removeEventListener('pointerup', onUp);
+        stage.removeEventListener('pointercancel', onUp);
+      });
+
+      const tick = () => {
+        if (!this.spinDragging) {
+          // Inércia do arraste, voltando suavemente para a rotação automática
+          if (Math.abs(this.spinVelocity) > autoSpeed) {
+            this.spinVelocity *= 0.95;
+          } else {
+            const direction = Math.sign(this.spinVelocity) || 1;
+            this.spinVelocity += (direction * autoSpeed - this.spinVelocity) * 0.05;
+          }
+          this.spinAngle += this.spinVelocity;
+        }
+        const radians = (this.spinAngle * Math.PI) / 180;
+        spinner.style.transform = `rotateX(${(Math.sin(radians) * 4).toFixed(2)}deg) rotateY(${this.spinAngle.toFixed(2)}deg)`;
+        stage.style.setProperty('--shadow-scale', (0.7 + Math.abs(Math.cos(radians)) * 0.3).toFixed(3));
+        this.spinFrame = requestAnimationFrame(tick);
+      };
+      this.spinFrame = requestAnimationFrame(tick);
+    });
+  }
+
+  ngOnDestroy(): void {
+    cancelAnimationFrame(this.spinFrame);
+    this.spinCleanup.forEach(cleanup => cleanup());
   }
 
   contactWhatsApp(): void {
