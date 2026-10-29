@@ -31,4 +31,4 @@ Para gerar a versão de produção:
 npm run build
 ```
 
-Os produtos são configuráveis em `src/app/app.ts`; nomes e condições comerciais permanecem abertos para a definição da Natália.
+Os produtos são configuráveis em `src/app/app.ts`; nomes e condições comerciais permanecem abertos para a definição da marca Dulce di Naty.

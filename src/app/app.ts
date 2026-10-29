@@ -94,12 +94,12 @@ export class App {
       .filter(product => (this.cart[product.id] || 0) > 0)
       .map(product => `• ${product.name}: ${this.cart[product.id]} unidade(s)`)
       .join('\n');
-    const message = `Olá, Natália! Montei esta solicitação de brownies para revenda:\n\n${items}\n\nPode me enviar a cotação e confirmar os recheios disponíveis?`;
+    const message = `Olá! Montei esta solicitação de brownies da Dulce di Naty para revenda:\n\n${items}\n\nPode me enviar a cotação e confirmar os recheios disponíveis?`;
     window.open(`https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   }
 
   contactWhatsApp(): void {
-    const message = 'Olá, Natália! Conheci a Dulce di Naty e gostaria de saber mais sobre a revenda de brownies e receber uma cotação.';
+    const message = 'Olá! Conheci a Dulce di Naty e gostaria de saber mais sobre a revenda de brownies e receber uma cotação.';
     window.open(`https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   }
 }
